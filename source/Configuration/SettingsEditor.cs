@@ -14,13 +14,16 @@ public static class SettingsEditor
 
   public static void DrawSettings(Rect rect)
   {
-    var listingRect = new Rect(rect.x, rect.y + 40f, rect.width, rect.height - 40f);
-    var l = new Listing_Settings();
-    l.Begin(rect);
-    if (l.ButtonText("Bubbles.ResetToDefault".TranslateSimple())) { Reset(); }
-    l.End();
+    var headerRect = new Rect(rect.x, rect.y, rect.width, Widgets.BackButtonHeight);
+    if (Widgets.ButtonText(headerRect, "Bubbles.ResetToDefault".TranslateSimple())) { Reset(); }
+    headerRect.height += Listing.DefaultGap;
+    var listingRect = new Rect(rect.x, headerRect.yMax, rect.width, rect.height - headerRect.height);
 
-    l.BeginScrollView(listingRect, ref _scrollPosition, ref _viewRect);
+    if (_viewRect == default) { _viewRect = new Rect(0f, 0f, listingRect.width - GenUI.ScrollBarWidth - GenUI.GapTiny, 99999f); }
+    Widgets.BeginScrollView(listingRect, ref _scrollPosition, _viewRect);
+
+    var l = new Listing_Settings();
+    l.Begin(_viewRect);
 
     var doTextColors = Settings.DoTextColors.Value;
     l.CheckboxLabeled("Bubbles.DoTextColors".TranslateSimple(), ref Settings.DoTextColors.Value);
@@ -31,9 +34,7 @@ public static class SettingsEditor
     l.CheckboxLabeled("Bubbles.DoDrafted".TranslateSimple(), ref Settings.DoDrafted.Value);
     l.CheckboxLabeled("Bubbles.HearingCheck".TranslateSimple() + " (Experimental)", ref Settings.HearingCheck.Value);
     if (Settings.HearingCheck.Value) { l.SliderLabeled("Bubbles.HearingRange".TranslateSimple(), ref Settings.HearingRange.Value, 1f, 32f, 1f); }
-    else { l.Gap(Text.LineHeight + 22f + l.verticalSpacing); }
-
-    l.Gap();
+    else { l.Gap(Text.LineHeight + GenUI.GapLabel + l.verticalSpacing); }
 
     l.SliderLabeled("Bubbles.AutoHideSpeed".TranslateSimple(), ref Settings.AutoHideSpeed.Value, 1, 4, display: Settings.AutoHideSpeed.Value == Settings.AutoHideSpeedDisabled ? "Bubbles.AutoHideSpeedOff".TranslateSimple() : Settings.AutoHideSpeed.Value.ToString());
 
@@ -64,7 +65,10 @@ public static class SettingsEditor
     l.ColorEntry("Bubbles.BackgroundSelected".TranslateSimple(), ref _colorBuffer[2], ref Settings.SelectedBackground.Value);
     l.ColorEntry("Bubbles.ForegroundSelected".TranslateSimple(), ref _colorBuffer[3], ref Settings.SelectedForeground.Value);
 
-    l.EndScrollView(ref _viewRect);
+    l.End();
+    Widgets.EndScrollView();
+
+    _viewRect.height = l.CurHeight + GenUI.GapTiny;
   }
 
   private static void Reset()
