@@ -1,0 +1,15 @@
+<Project>
+  <!-- Linux/WSL build support. Upstream Bubbles resolves the game DLLs from the
+       Windows registry and references Unity's stripped mscorlib, which cannot
+       satisfy net472 on a non-Windows SDK (CS7069 on Stack<T>).
+
+       Fix: let the .NET Framework reference assemblies provide the BCL, and keep
+       only the game-specific references pointing at the real install. -->
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
+    <GameLibDir Condition=" '$(GameLibDir)' == '' ">$(RIMWORLD_MANAGED)</GameLibDir>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(OS)' != 'Windows_NT' ">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
+  </ItemGroup>
+</Project>
