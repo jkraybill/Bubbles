@@ -48,8 +48,30 @@ public class Settings : ModSettings
   public static readonly Setting<float> OpacityStart = new(nameof(OpacityStart), 0.9f);
   public static readonly Setting<float> OpacityHover = new(nameof(OpacityHover), 0.2f);
 
+  /// <summary>Ticks the bubble holds at full opacity before it starts to go.</summary>
   public static readonly Setting<int> FadeStart = new(nameof(FadeStart), 500);
+
+  /// <summary>
+  /// Ticks the fade itself takes. Capped at <see cref="MaxFadeLength"/>.
+  ///
+  /// rim-universe #6. The slider used to run to 2500, which at normal speed is
+  /// FORTY-ONE SECONDS of a bubble sitting at partial opacity. JK had it maxed,
+  /// reasonably: the two sliders read as "start" and "length" and a player who wants
+  /// longer bubbles raises both. But only the first one buys reading time — the second
+  /// buys ghosting, and he described the result exactly: "they kind of semi-ghost for
+  /// ages".
+  ///
+  /// A fade is a transition, not a state. Once it begins it should be over quickly at
+  /// any game speed, so the ceiling is now short enough that it cannot be anything else.
+  /// </summary>
   public static readonly Setting<int> FadeLength = new(nameof(FadeLength), 100);
+
+  /// <summary>
+  /// 300 ticks: five seconds at normal speed, under a second at Superfast. Long enough
+  /// to read as a fade rather than a cut, short enough that it can never read as a
+  /// second, dimmer bubble.
+  /// </summary>
+  public const int MaxFadeLength = 300;
 
   public static readonly Setting<Color> Background = new(nameof(Background), Color.white);
   public static readonly Setting<Color> Foreground = new(nameof(Foreground), Color.black);
@@ -83,5 +105,18 @@ public class Settings : ModSettings
     }
 
     AllSettings.Do(static setting => setting.Scribe());
+
+    // Clamp on the way in as well as in the UI, because the old slider went to 2500
+    // and saved configs still hold those values. Without this the fix only reaches
+    // players who happen to open the settings window. rim-universe #6.
+    if (FadeLength.Value > MaxFadeLength)
+    {
+      var was = FadeLength.Value;
+      FadeLength.Value = MaxFadeLength;
+      Bubbles.Mod.Warning($"Fade length was {was} ticks, which is {was / 60}s of half-visible " +
+                          $"bubble at normal speed. Clamped to {MaxFadeLength}. If you set it high " +
+                          "to make bubbles last longer, raise \"ticks to start fade\" instead — " +
+                          "that is the one that buys reading time.");
+    }
   }
 }

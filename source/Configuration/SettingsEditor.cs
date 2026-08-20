@@ -58,7 +58,7 @@ public static class SettingsEditor
     l.SliderLabeled("Bubbles.OpacityStart".TranslateSimple(), ref Settings.OpacityStart.Value, 0.3f, 1f, 0.05f, Settings.OpacityStart.Value.ToStringPercent());
     l.SliderLabeled("Bubbles.OpacityHover".TranslateSimple(), ref Settings.OpacityHover.Value, 0.05f, 1f, 0.05f, Settings.OpacityHover.Value.ToStringPercent());
     l.SliderLabeled("Bubbles.FadeStart".TranslateSimple(), ref Settings.FadeStart.Value, 100, 5000, 50);
-    l.SliderLabeled("Bubbles.FadeLength".TranslateSimple(), ref Settings.FadeLength.Value, 50, 2500, 50);
+    l.SliderLabeled("Bubbles.FadeLength".TranslateSimple(), ref Settings.FadeLength.Value, 10, Settings.MaxFadeLength, 10);
 
     l.ColorEntry("Bubbles.Background".TranslateSimple(), ref _colorBuffer[0], ref Settings.Background.Value);
     l.ColorEntry("Bubbles.Foreground".TranslateSimple(), ref _colorBuffer[1], ref Settings.Foreground.Value);
