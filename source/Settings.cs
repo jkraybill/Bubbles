@@ -51,11 +51,17 @@ public class Settings : ModSettings
   public static readonly Setting<int> FadeStart = new(nameof(FadeStart), 500);
   public static readonly Setting<int> FadeLength = new(nameof(FadeLength), 100);
 
-  // rim-universe #6. The two above are game ticks, so a bubble's time on screen was
-  // inversely proportional to game speed — 1.7 seconds at Superfast, which is not long
-  // enough to read a generated sentence. These are unpaused wall-clock seconds, and
-  // the dwell grows with the length of the line.
-  public static readonly Setting<bool> RealTimeFade = new(nameof(RealTimeFade), true);
+  // rim-universe #6, and OFF by default after JK reviewed it. The reasoning is his and
+  // it is good: everything else in RimWorld scales with game speed, so a bubble that
+  // does not is the odd one out — and at 6x there is six times as much dialogue
+  // competing for the same three stacked slots, which is an argument for less time per
+  // bubble rather than more. The tick sliders below already solved it for anyone who
+  // moved them.
+  //
+  // Kept behind the checkbox because the STOCK defaults are still 500 + 100 ticks,
+  // which is 1.7 seconds at Superfast and 0.67 at Ultrafast — not long enough to read
+  // a generated sentence, for a player who has never touched the sliders.
+  public static readonly Setting<bool> RealTimeFade = new(nameof(RealTimeFade), false);
   public static readonly Setting<float> DwellSeconds = new(nameof(DwellSeconds), 4f);
   public static readonly Setting<float> DwellPerChar = new(nameof(DwellPerChar), 0.09f);
   public static readonly Setting<float> DwellMaxSeconds = new(nameof(DwellMaxSeconds), 30f);
