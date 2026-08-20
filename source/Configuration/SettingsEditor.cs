@@ -57,22 +57,8 @@ public static class SettingsEditor
 
     l.SliderLabeled("Bubbles.OpacityStart".TranslateSimple(), ref Settings.OpacityStart.Value, 0.3f, 1f, 0.05f, Settings.OpacityStart.Value.ToStringPercent());
     l.SliderLabeled("Bubbles.OpacityHover".TranslateSimple(), ref Settings.OpacityHover.Value, 0.05f, 1f, 0.05f, Settings.OpacityHover.Value.ToStringPercent());
-    // rim-universe #6. Real time by default: the tick-based sliders below it meant a
-    // bubble lasted 1.7 seconds at Superfast, which is not long enough to read a
-    // generated sentence.
-    l.CheckboxLabeled("Bubbles.RealTimeFade".TranslateSimple(), ref Settings.RealTimeFade.Value);
-    if (Settings.RealTimeFade.Value)
-    {
-      l.SliderLabeled("Bubbles.DwellSeconds".TranslateSimple(), ref Settings.DwellSeconds.Value, 0f, 20f, 0.5f, Settings.DwellSeconds.Value.ToString("0.0") + "s");
-      l.SliderLabeled("Bubbles.DwellPerChar".TranslateSimple(), ref Settings.DwellPerChar.Value, 0f, 0.2f, 0.005f, Settings.DwellPerChar.Value.ToString("0.000") + "s");
-      l.SliderLabeled("Bubbles.DwellMaxSeconds".TranslateSimple(), ref Settings.DwellMaxSeconds.Value, 5f, 120f, 1f, Settings.DwellMaxSeconds.Value.ToString("0") + "s");
-      l.SliderLabeled("Bubbles.FadeSeconds".TranslateSimple(), ref Settings.FadeSeconds.Value, 0f, 10f, 0.1f, Settings.FadeSeconds.Value.ToString("0.0") + "s");
-    }
-    else
-    {
-      l.SliderLabeled("Bubbles.FadeStart".TranslateSimple(), ref Settings.FadeStart.Value, 100, 5000, 50);
-      l.SliderLabeled("Bubbles.FadeLength".TranslateSimple(), ref Settings.FadeLength.Value, 50, 2500, 50);
-    }
+    l.SliderLabeled("Bubbles.FadeStart".TranslateSimple(), ref Settings.FadeStart.Value, 100, 5000, 50);
+    l.SliderLabeled("Bubbles.FadeLength".TranslateSimple(), ref Settings.FadeLength.Value, 50, 2500, 50);
 
     l.ColorEntry("Bubbles.Background".TranslateSimple(), ref _colorBuffer[0], ref Settings.Background.Value);
     l.ColorEntry("Bubbles.Foreground".TranslateSimple(), ref _colorBuffer[1], ref Settings.Foreground.Value);
