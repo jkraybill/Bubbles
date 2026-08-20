@@ -60,6 +60,10 @@ public static class Bubbler
 
   public static void Draw()
   {
+    // Before the early returns below: a bubble hidden behind a zoomed-out camera must
+    // still age, or panning away and back resurrects everything. rim-universe #6.
+    BubbleClock.Advance();
+
     var altitude = GetAltitude();
     if (altitude <= 0 || altitude > Settings.AltitudeMax.Value) { return; }
 

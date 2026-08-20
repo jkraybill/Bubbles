@@ -51,6 +51,16 @@ public class Settings : ModSettings
   public static readonly Setting<int> FadeStart = new(nameof(FadeStart), 500);
   public static readonly Setting<int> FadeLength = new(nameof(FadeLength), 100);
 
+  // rim-universe #6. The two above are game ticks, so a bubble's time on screen was
+  // inversely proportional to game speed — 1.7 seconds at Superfast, which is not long
+  // enough to read a generated sentence. These are unpaused wall-clock seconds, and
+  // the dwell grows with the length of the line.
+  public static readonly Setting<bool> RealTimeFade = new(nameof(RealTimeFade), true);
+  public static readonly Setting<float> DwellSeconds = new(nameof(DwellSeconds), 4f);
+  public static readonly Setting<float> DwellPerChar = new(nameof(DwellPerChar), 0.09f);
+  public static readonly Setting<float> DwellMaxSeconds = new(nameof(DwellMaxSeconds), 30f);
+  public static readonly Setting<float> FadeSeconds = new(nameof(FadeSeconds), 1.5f);
+
   public static readonly Setting<Color> Background = new(nameof(Background), Color.white);
   public static readonly Setting<Color> Foreground = new(nameof(Foreground), Color.black);
   public static readonly Setting<Color> SelectedBackground = new(nameof(SelectedBackground), new Color(1f, 1f, 0.75f));

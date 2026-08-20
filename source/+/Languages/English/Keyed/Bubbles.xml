@@ -21,6 +21,12 @@
   <Bubbles.OffsetDirections>Down|Left|Up|Right</Bubbles.OffsetDirections>
   <Bubbles.OpacityStart>Starting opacity</Bubbles.OpacityStart>
   <Bubbles.OpacityHover>Mouseover opacity</Bubbles.OpacityHover>
+  <!-- rim-universe #6 -->
+  <Bubbles.RealTimeFade>Fade in real time (recommended)</Bubbles.RealTimeFade>
+  <Bubbles.DwellSeconds>Time on screen, before reading</Bubbles.DwellSeconds>
+  <Bubbles.DwellPerChar>...plus this much per character</Bubbles.DwellPerChar>
+  <Bubbles.DwellMaxSeconds>...but never longer than</Bubbles.DwellMaxSeconds>
+  <Bubbles.FadeSeconds>Fade out over</Bubbles.FadeSeconds>
   <Bubbles.FadeStart>Ticks to start fade</Bubbles.FadeStart>
   <Bubbles.FadeLength>Ticks to fade</Bubbles.FadeLength>
   <Bubbles.FontSize>Font size</Bubbles.FontSize>

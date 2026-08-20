@@ -12,6 +12,9 @@ public class Bubble(Pawn pawn, LogEntry entry)
 
   public LogEntry Entry { get; } = entry;
 
+  /// <summary>When this bubble appeared, on the unpaused wall clock. rim-universe #6.</summary>
+  private readonly float _born = BubbleClock.Now;
+
   private string? _text;
   private string Text => _text ??= GetText();
 
@@ -117,6 +120,15 @@ public class Bubble(Pawn pawn, LogEntry entry)
 
   private float GetFade()
   {
+    if (Settings.RealTimeFade.Value)
+    {
+      var dwell = Dwell.Seconds(Text.Length, Settings.DwellSeconds.Value,
+                                Settings.DwellPerChar.Value, Settings.DwellMaxSeconds.Value);
+      return Dwell.Opacity(BubbleClock.Now - _born, dwell, Settings.FadeSeconds.Value,
+                           Settings.OpacityStart.Value);
+    }
+
+    // The original, in game ticks, for anyone who preferred it.
     var elasped = Find.TickManager!.TicksAbs - Entry.Tick - Settings.FadeStart.Value;
 
     if (elasped <= 0) { return Settings.OpacityStart.Value; }
