@@ -48,8 +48,30 @@ public class Settings : ModSettings
   public static readonly Setting<float> OpacityStart = new(nameof(OpacityStart), 0.9f);
   public static readonly Setting<float> OpacityHover = new(nameof(OpacityHover), 0.2f);
 
-  /// <summary>Ticks the bubble holds at full opacity before it starts to go.</summary>
-  public static readonly Setting<int> FadeStart = new(nameof(FadeStart), 500);
+  /// <summary>
+  /// Ticks the bubble holds at full opacity before it starts to go.
+  ///
+  /// rim-universe #6, the half that survived reverting the real-time fade. Ticks are
+  /// GAME ticks, so the wall-clock a reader gets divides by the game speed, and 500
+  /// upstream ticks is what the player actually has:
+  ///
+  ///   normal (1x)     8.3 s      fast (3x)      2.8 s
+  ///   superfast (6x)  1.4 s      ultrafast(15x) 0.6 s
+  ///
+  /// Reading is 0.05-0.06 s/char at 200-250 wpm, so a 90-character generated line
+  /// needs about 5.4 s. At 500 that is legible at normal speed and gone before it
+  /// can be read at every speed above it — which is where the game is spent, and why
+  /// #6 opened with the bubbles being unreadable rather than the fade being wrong.
+  ///
+  /// 1200 gives 20 / 6.7 / 3.3 / 1.3 s. Fast is comfortable, superfast is enough for
+  /// a short turn, and ultrafast is still hopeless — nothing static can fix that, and
+  /// AutoHideSpeed is the setting for a player who wants them gone at speed.
+  ///
+  /// Twenty seconds at 1x sounds long and is bounded by PawnMax: at most four
+  /// bubbles stack per pawn, so a held conversation reads as a conversation instead
+  /// of each line replacing the last one before it was finished.
+  /// </summary>
+  public static readonly Setting<int> FadeStart = new(nameof(FadeStart), 1200);
 
   /// <summary>
   /// Ticks the fade itself takes. Capped at <see cref="MaxFadeLength"/>.
